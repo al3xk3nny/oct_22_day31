@@ -1,0 +1,27 @@
+-- This Drop Table will throw an error if the table doesn't exist. That's ok.
+Drop table Note;
+-- Create a table to store notes about songs.
+-- What relationships does this table have with other tables?
+CREATE TABLE Note
+(
+    NoteId INT NOT NULL AUTO_INCREMENT,
+    CustomerId INTEGER  NOT NULL,
+    TrackId INTEGER  NOT NULL,
+    Text Nvarchar(150)  NOT NULL,
+    CONSTRAINT PK_Note PRIMARY KEY  (NoteId),
+    FOREIGN KEY (CustomerId) REFERENCES Customer (CustomerId)
+    ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (TrackId) REFERENCES Track (TrackId)
+    ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+-- Insert Some comments for tracks
+-- Notice the columns we need to fill, and the ones we ignore.
+Insert Into Note
+  (CustomerId, TrackId, Text)
+Values
+  (1, 3504, 'Always liked this song.'),
+  (1, 3504, 'OMG, Bono sounds so young'),
+  (2, 3504, 'That guitar!!!'),
+  (1, 3504,'Still sounds fresh.');
+-- Query the Notes
+Select * from Note;

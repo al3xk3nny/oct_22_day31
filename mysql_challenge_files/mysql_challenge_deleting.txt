@@ -1,0 +1,66 @@
+-- DELETING DATA WITH SQL
+-- NOTE: Use the create_table.sql Script to create the table and Data for this Lesson
+/*
+  You can delete rows from a table using the 'DELETE' SQL Statement.
+  The syntax is similar to the basic 'SELECT' statement, with a 'WHERE' Clause.
+  However, instead of returning the matching rows, the 'DELETE' statement, deletes them.
+*/
+-- Just as a SELECT statement without a WHERE clause will return all rows,
+-- A DELETE statement without a WHERE clause will delete all rows.
+delete from Note;
+-- Delete a Note with a specific NoteId
+delete from Note where NoteId = 3;
+-- Delete all Notes for a Specific Track, by Specific Customer
+delete from Note where TrackId = 3504 and CustomerId = 2;
+-- Delete any Notes that mention Bono
+-- Note the wildcard '%' will match any text. So 'Bono' can appear anywhere in the text'
+delete from Note where TEXT Like "%Bono%";
+/*
+  Since the SELECT and DELETE Statements share the same WHERE clause,
+  it's good practice, when deleting rows, to write a SELECT statement
+  that returns the rows to be deleted, and then convert that into a DELETE statement.
+ */
+-- Write a query that returns all tracks for the Album "Boy" (AlbumId = 348)
+select  * from Track where AlbumId = 348;
+-- Convert SELECT Statement to a DELETE Statement
+delete from Track where AlbumId = 348;
+/*
+  BRONZE CHALLENGES
+  -----------------
+  There are two tracks with running times longer than 5000000 Milliseconds.
+  Write a SELECT Statement that Identifies them.
+  Expected : 2 rows (TrackIds 2820 & 3224)
+*/
+select TrackId from Track where Milliseconds >5000000;
+/*
+  Find if there are any references to these tracks in the PlayListTrack Table
+  Expected : 4 rows
+ */
+select * from PlaylistTrack where TrackId in (2820, 3224);
+
+(Google search CASCADE and PROTECT in mySql - see Chinook database cf. creating foreign keys; ON DELETE NO ACTION should read, ON DELETE CASCADE or ON DELETE PROTECT - NO ACTION is bad practice for database integrity).
+/*
+  Find if there are any references to these tracks in the InvoiceLine Table
+  Expected : 2 rows
+ */
+select * from InvoiceLine where TrackId in (2820, 3224);
+/*
+  SILVER CHALLENGES
+  -----------------
+  Convert the SELECT from Track Statement into a DELETE Statement that will Delete these two tracks
+ */
+delete from Track where Milliseconds >5000000;
+/*
+  Query the PlaylistTrack and InvoiceLine tables again for the TrackIds (2820 and 3224)
+  You'll find there are still rows in those tables referring to the now deleted Tracks.
+  Write Delete Statements for the rows in PlaylistTrack and InvoiceLine that refer to the deleted Tracks
+ */
+/*
+  Previously, when you wanted to delete Tracks for a given Album, you needed to query the Album Table
+  to get the AlbumId, and then use that Id in the DELETE From Track statement.
+  You can Delete Tracks by Album Title, by using a Subquery. Google Deleting using a SubQuery and try to
+  write a Delete Statement that will delete all Tracks for the Album "Boy"
+ */
+delete from Track
+  where Track.AlbumId in
+        (select Album.AlbumId from Album where Title = "Boy")

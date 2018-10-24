@@ -1,3 +1,5 @@
+# The below demonstrates selecting data from a table, returning the data as a list of dictionaries.
+
 import pymysql
 import os
 

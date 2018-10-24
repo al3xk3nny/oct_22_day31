@@ -1,4 +1,4 @@
-# The below demonstrates creating a table called "Friends".
+# The below demonstrates inserting data into the "Friends" table.
 
 import os
 import datetime
@@ -13,7 +13,8 @@ connection = pymysql.connect(host='localhost',
 
 try:
     with connection.cursor() as cursor:
-        cursor.execute("""CREATE TABLE IF NOT EXISTS
-                          Friends(name char(20), age int, DOB datetime);""")
+        row = ("bob", 21, "1990-02-06 23:04:56")
+        cursor.execute("INSERT INTO Friends VALUES (%s, %s, %s);", row)
+        connection.commit()
 finally:
     connection.close()

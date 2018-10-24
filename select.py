@@ -2,6 +2,8 @@
 # sudo pip3 install --upgrade setuptools
 # sudo pip3 install pymysql
 
+# The below simply demonstrates selecting data from a table. The data returns as a tuple of tuples.
+
 import os
 import pymysql
 
